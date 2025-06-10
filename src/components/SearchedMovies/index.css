@@ -1,0 +1,66 @@
+.searched-movies-bg-container {
+  height: 100vh;
+  width: 100vw;
+}
+.searched-movies-container {
+  width: 100%;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: #030505;
+  margin: 0px;
+}
+.each-searched-movie-item {
+  height: 465px;
+  width: 318px;
+  margin: 6px;
+  box-shadow: 0px 0px 1px 1px #edf0f5;
+  background-color: #030505;
+}
+.movie-poster-image {
+  height: 73%;
+  width: 100%;
+}
+.title-rating-btn-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 27%;
+}
+.title-rating-container {
+  display: flex;
+  flex-direction: row;
+  height: 13%;
+  justify-content: space-around;
+  align-items: center;
+}
+.movie-title {
+  color: #ffffff;
+  font-size: 19px;
+  font-family: 'Roboto';
+  width: 80%;
+}
+.movie-rating {
+  color: #ffffff;
+  font-size: 12px;
+  font-family: 'Roboto';
+}
+.view-details-btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.view-details-btn {
+  background-color: #0a1e7a;
+  height: 35px;
+  width: 140px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Roboto';
+  border-radius: 6px;
+  border-width: 0px;
+  cursor: pointer;
+}
