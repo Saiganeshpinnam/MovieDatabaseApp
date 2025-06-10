@@ -32,6 +32,7 @@ class Home extends Component {
   }
 
   getPopularMovies = async pageNumber => {
+    console.log(pageNumber)
     const {apiStatus} = this.state
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
@@ -40,7 +41,7 @@ class Home extends Component {
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/popular?api_key=6de6464c60dc6e29adb8a0eb4dec6103&language=en-US&page=${pageNumber}`,
     )
-    console.log(response.ok)
+    console.log(response)
     if (response.ok === true) {
       const data = await response.json()
       const formattedData = data.results.map(eachMovie => ({
@@ -62,55 +63,57 @@ class Home extends Component {
     }
   }
 
-  renderHomeMovieDetails = () => (
-    <SearchedMovieContext.Consumer>
-      {value => {
-        const {popularMoviesData} = this.state
-        const {renderPrevPage, renderNextPage, pageNumber} = value
+  renderHomeMovieDetails = () => {
+    const {popularMoviesData} = this.state
+    return (
+      <SearchedMovieContext.Consumer>
+        {value => {
+          const {renderPrevPage, renderNextPage, pageNumber} = value
 
-        const getPopularMoviesData = getPopularMovies(pageNumber)
+          const getPopularMoviesData = this.getPopularMovies(pageNumber)
 
-        return (
-          <div className="home-bg-container">
-            <Header />
-            <ul className="popular-movies-container">
-              {popularMoviesData.map(eachPopularMovie => (
-                <li
-                  key={eachPopularMovie.id}
-                  className="each-popular-movie-item"
-                >
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${eachPopularMovie.posterPath}`}
-                    alt={eachPopularMovie.title}
-                    className="movie-poster-image"
-                  />
-                  <div className="title-rating-btn-container">
-                    <div className="title-rating-container">
-                      <p className="movie-title">{eachPopularMovie.title}</p>
-                      <p className="movie-rating">
-                        {eachPopularMovie.voteAverage}
-                      </p>
+          return (
+            <div className="home-bg-container">
+              <Header />
+              <ul className="popular-movies-container">
+                {popularMoviesData.map(eachPopularMovie => (
+                  <li
+                    key={eachPopularMovie.id}
+                    className="each-popular-movie-item"
+                  >
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500${eachPopularMovie.posterPath}`}
+                      alt={eachPopularMovie.title}
+                      className="movie-poster-image"
+                    />
+                    <div className="title-rating-btn-container">
+                      <div className="title-rating-container">
+                        <p className="movie-title">{eachPopularMovie.title}</p>
+                        <p className="movie-rating">
+                          {eachPopularMovie.voteAverage}
+                        </p>
+                      </div>
+                      <Link
+                        to={`/movie/${eachPopularMovie.id}`}
+                        className="view-details-btn-container"
+                      >
+                        <button type="button" className="view-details-btn">
+                          View Details
+                        </button>
+                      </Link>
                     </div>
-                    <Link
-                      to={`/movie/${eachPopularMovie.id}`}
-                      className="view-details-btn-container"
-                    >
-                      <button type="button" className="view-details-btn">
-                        View Details
-                      </button>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div className="pagination-container">
-              <Pagination />
+                  </li>
+                ))}
+              </ul>
+              <div className="pagination-container">
+                <Pagination />
+              </div>
             </div>
-          </div>
-        )
-      }}
-    </SearchedMovieContext.Consumer>
-  )
+          )
+        }}
+      </SearchedMovieContext.Consumer>
+    )
+  }
 
   renderLoadingView = () => (
     <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />

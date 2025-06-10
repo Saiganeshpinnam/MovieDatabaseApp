@@ -54,6 +54,7 @@ class App extends Component {
 
   render() {
     const {userInputSearch, pageNumber} = this.state
+
     return (
       <SearchedMovieContext.Provider
         value={{

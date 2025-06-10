@@ -53,8 +53,7 @@ class TopRatedMovies extends Component {
         topRatedMoviesData: formattedData,
         apiStatus: apiStatusConstants.success,
       })
-    }
-     else {
+    } else {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
