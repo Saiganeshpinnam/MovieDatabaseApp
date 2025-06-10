@@ -14,6 +14,8 @@ import SearchedMovies from './components/SearchedMovies'
 
 import SearchedMovieContext from './context/SearchedMovieContext'
 
+import Pagination from './components/Pagination'
+
 import './App.css'
 
 // write your code here
@@ -21,6 +23,7 @@ import './App.css'
 class App extends Component {
   state = {
     userInputSearch: '',
+    pageNumber: 1,
   }
 
   updateSearchedMovie = userInput => {
@@ -29,13 +32,36 @@ class App extends Component {
     })
   }
 
+  renderPrevPage = () => {
+    const {pageNumber} = this.state
+    if (pageNumber > 1) {
+      this.setState(prevState => ({
+        pageNumber: prevState.pageNumber - 1,
+      }))
+    } else {
+      this.setState({
+        pageNumber: 1,
+      })
+    }
+  }
+
+  renderNextPage = () => {
+    const {pageNumber} = this.state
+    this.setState(prevState => ({
+      pageNumber: prevState.pageNumber + 1,
+    }))
+  }
+
   render() {
-    const {userInputSearch} = this.state
+    const {userInputSearch, pageNumber} = this.state
     return (
       <SearchedMovieContext.Provider
         value={{
           userInputSearch,
           updateSearchedMovie: this.updateSearchedMovie,
+          pageNumber,
+          renderPrevPage: this.renderPrevPage,
+          renderNextPage: this.renderNextPage,
         }}
       >
         <Switch>
@@ -45,6 +71,7 @@ class App extends Component {
           <Route exact path="/movie/:id" component={SingleMovieDetails} />
           <Route exact path="/searched-movies" component={SearchedMovies} />
         </Switch>
+        <Pagination />
       </SearchedMovieContext.Provider>
     )
   }

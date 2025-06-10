@@ -76,17 +76,7 @@
   width: 15%;
   align-self: center;
 }
-.pagination-btn {
-  height: 35px;
-  width: 90px;
-  background-color: #ffffff;
-  color: #030505;
-  font-size: 16px;
-  font-family: 'Roboto';
-  border-color: #0a1e7a;
-  border-width: 2px;
-  cursor: pointer;
-}
+
 .page-number {
   color: #ffffff;
   font-size: 18px;

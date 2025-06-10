@@ -26,15 +26,17 @@
   width: 19%;
   justify-content: space-between;
   align-items: center;
+  list-style-type: none;
 }
-.category-text {
-  background-color: transparent;
+.category-link {
   border-width: 0px;
-  color: #ffffff;
-  font-size: 10px;
-  font-family: 'Roboto';
   cursor: pointer;
   text-decoration: none;
+}
+.category-heading {
+  color: #ffffff;
+  font-size: 18px;
+  font-family: 'Roboto';
 }
 .search-container {
   display: flex;

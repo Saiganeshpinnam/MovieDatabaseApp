@@ -54,14 +54,14 @@ class Header extends Component {
                 </button>
               </div>
               <div className="categories-container">
-                <Link to="/" className="category-text">
-                  <h1>Popular</h1>
+                <Link to="/" className="category-link">
+                  <h1 className="category-heading">Popular</h1>
                 </Link>
-                <Link to="/top-rated" className="category-text">
-                  <h1>Top Rated</h1>
+                <Link to="/top-rated" className="category-link">
+                  <h1 className="category-heading">Top Rated</h1>
                 </Link>
-                <Link to="/upcoming" className="category-text">
-                  <h1>Upcoming</h1>
+                <Link to="/upcoming" className="category-link">
+                  <h1 className="category-heading">Upcoming</h1>
                 </Link>
               </div>
             </div>

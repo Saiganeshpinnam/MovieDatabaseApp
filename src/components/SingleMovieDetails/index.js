@@ -58,7 +58,7 @@ class SingleMovieDetails extends Component {
         apiStatus: apiStatusConstants.success,
       })
     }
-    if (response.status === 401) {
+     else {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -100,16 +100,8 @@ class SingleMovieDetails extends Component {
     // console.log(movieDetailsSection)
     const {castId, movieCast} = movieCastDetails
 
-    const {
-      id,
-      name,
-      image,
-      ratings,
-      duration,
-      releaseDate,
-      overview,
-      genre,
-    } = movieDetailsSection
+    const {id, name, image, ratings, duration, releaseDate, overview, genre} =
+      movieDetailsSection
     //  console.log(genre)
     return (
       <>
