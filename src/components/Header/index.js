@@ -33,8 +33,8 @@ class Header extends Component {
 
           return (
             <div className="header-container">
-              <Link to="/" className="movieDb-title">
-                <h1>movieDB</h1>
+              <Link to="/" className="logo-title-link">
+                <h1 className="movieDb-title">movieDB</h1>
               </Link>
               <div className="search-container">
                 <input
@@ -44,23 +44,24 @@ class Header extends Component {
                   onChange={this.onChangingMovieName}
                   value={searchInput}
                 />
+
                 <button
                   type="button"
-                  className="search-btn"
                   onClick={() => this.onClickingSearchIcon(updateSearchedMovie)}
+                  className="search-btn"
                 >
                   Search
                 </button>
               </div>
               <div className="categories-container">
                 <Link to="/" className="category-text">
-                  <h1>Popular </h1>
+                  <h1>Popular</h1>
                 </Link>
                 <Link to="/top-rated" className="category-text">
-                  <h1>Top Rated </h1>
+                  <h1>Top Rated</h1>
                 </Link>
                 <Link to="/upcoming" className="category-text">
-                  <h1>Upcoming </h1>
+                  <h1>Upcoming</h1>
                 </Link>
               </div>
             </div>

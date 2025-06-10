@@ -4,6 +4,8 @@ import {Component} from 'react'
 
 import Loader from 'react-loader-spinner'
 
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+
 import Header from '../Header'
 
 import './index.css'
@@ -27,6 +29,7 @@ class UpcomingMovies extends Component {
   }
 
   getUpcomingMovies = async () => {
+    const {apiStatus} = this.state
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
@@ -50,7 +53,8 @@ class UpcomingMovies extends Component {
         upcomingMoviesData: formattedData,
         apiStatus: apiStatusConstants.success,
       })
-    } else {
+    }
+    if (response.status === 401) {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -85,7 +89,7 @@ class UpcomingMovies extends Component {
     )
   }
 
-  renderUpComingMovieDetails = () => {
+  upcomingMovies = () => {
     const {upcomingMoviesData, upcomingMoviesPageNumber} = this.state
     //  console.log(upcomingMoviesData)
     return (
@@ -145,7 +149,7 @@ class UpcomingMovies extends Component {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstants.success:
-        return this.renderUpComingMovieDetails()
+        return this.upcomingMovies()
       case apiStatusConstants.failure:
         return this.renderFailureView()
       case apiStatusConstants.inProgress:

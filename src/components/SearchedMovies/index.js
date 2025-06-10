@@ -4,6 +4,8 @@ import {Component} from 'react'
 
 import Loader from 'react-loader-spinner'
 
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+
 import Header from '../Header'
 
 import SearchedMovieContext from '../../context/SearchedMovieContext'
@@ -50,7 +52,8 @@ class SearchedMovies extends Component {
 
         apiStatus: apiStatusConstants.success,
       })
-    } else {
+    }
+    if (searchedMoviesResponse.status === 401) {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -111,7 +114,7 @@ class SearchedMovies extends Component {
     <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
   )
 
-  renderFailureView = () => <h1>Not Found</h1>
+  renderSpecificDetailsFailureView = () => <h1>Not Found</h1>
 
   renderSwitch = () => {
     const {apiStatus} = this.state
@@ -119,7 +122,7 @@ class SearchedMovies extends Component {
       case apiStatusConstants.success:
         return this.renderSearchedMovieDetails()
       case apiStatusConstants.failure:
-        return this.renderFailureView()
+        return this.renderSpecificDetailsFailureView()
       case apiStatusConstants.inProgress:
         return this.renderLoadingView()
       default:

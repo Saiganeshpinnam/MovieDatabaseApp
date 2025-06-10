@@ -4,6 +4,8 @@ import {Component} from 'react'
 
 import Loader from 'react-loader-spinner'
 
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+
 import Header from '../Header'
 
 import './index.css'
@@ -27,6 +29,7 @@ class TopRatedMovies extends Component {
   }
 
   getTopRatedMovies = async () => {
+    const {apiStatus} = this.state
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
@@ -50,7 +53,8 @@ class TopRatedMovies extends Component {
         topRatedMoviesData: formattedData,
         apiStatus: apiStatusConstants.success,
       })
-    } else {
+    }
+    if (response.status === 401) {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -85,7 +89,7 @@ class TopRatedMovies extends Component {
     )
   }
 
-  renderTopRatedMovieDetails = () => {
+  topRatesMovies = () => {
     const {topRatedMoviesData, topRatedMoviesPageNumber} = this.state
     // console.log(topRatedMoviesData)
     return (
@@ -148,7 +152,7 @@ class TopRatedMovies extends Component {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstants.success:
-        return this.renderTopRatedMovieDetails()
+        return this.topRatesMovies()
       case apiStatusConstants.failure:
         return this.renderFailureView()
       case apiStatusConstants.inProgress:

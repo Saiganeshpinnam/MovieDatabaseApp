@@ -3,6 +3,9 @@ import {Link} from 'react-router-dom'
 import {Component} from 'react'
 
 import Loader from 'react-loader-spinner'
+
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+
 import Header from '../Header'
 
 import './index.css'
@@ -26,16 +29,17 @@ class Home extends Component {
   }
 
   getPopularMovies = async () => {
-    const {pageNumber} = this.state
+    const {apiStatus} = this.state
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
+    const {pageNumber} = this.state
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/popular?api_key=6de6464c60dc6e29adb8a0eb4dec6103&language=en-US&page=${pageNumber}`,
     )
     if (response.ok === true) {
       const data = await response.json()
-      // console.log(data)
+      console.log(data)
       //  data.results.map(eachResult => console.log(eachResult.title))
       const formattedData = data.results.map(eachMovie => ({
         id: eachMovie.id,
@@ -49,7 +53,8 @@ class Home extends Component {
         popularMoviesData: formattedData,
         apiStatus: apiStatusConstants.success,
       })
-    } else {
+    }
+    if (response.status === 401) {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -85,16 +90,7 @@ class Home extends Component {
     )
   }
 
-  onClickingPageButton = pageNumber => {
-    this.setState(
-      {
-        pageNumber,
-      },
-      this.getPopularMovies,
-    )
-  }
-
-  renderPopularMovies = () => {
+  renderHomeMovieDetails = () => {
     const {popularMoviesData, pageNumber} = this.state
 
     return (
@@ -134,7 +130,6 @@ class Home extends Component {
             Prev
           </button>
           <p className="page-number">{pageNumber}</p>
-
           <button
             type="button"
             className="pagination-btn"
@@ -157,7 +152,7 @@ class Home extends Component {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstants.success:
-        return this.renderPopularMovies()
+        return this.renderHomeMovieDetails()
       case apiStatusConstants.failure:
         return this.renderFailureView()
       case apiStatusConstants.inProgress:

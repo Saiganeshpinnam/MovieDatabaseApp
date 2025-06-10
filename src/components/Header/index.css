@@ -8,20 +8,22 @@
   background-color: #0c1154;
   color: #ffffff;
 }
+.logo-title-link {
+  text-decoration: none;
+}
 .movieDb-title {
   color: #4c915c;
-  font-size: 20px;
+  font-size: 35px;
   font-family: 'Roboto';
   background-color: transparent;
   border-width: 0px;
   font-weight: bold;
   cursor: pointer;
-  text-decoration: none;
 }
 .categories-container {
   display: flex;
   flex-direction: row;
-  width: 35%;
+  width: 19%;
   justify-content: space-between;
   align-items: center;
 }
@@ -40,29 +42,26 @@
   justify-content: center;
   align-items: center;
   height: 37px;
-  width: 280px;
+  width: 270px;
   border-width: 1px;
   border-style: solid;
   border-color: #ffffff;
 }
-.search-btn {
-  background-color: #ffffff;
-  height: 100%;
-  width: 20%;
-  border-width: 0px;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
 .input-element {
   height: 100%;
-  width: 80%;
+  width: 72%;
   background-color: transparent;
   border-width: 0px;
   font-size: 14px;
   color: #ffffff;
 }
 
-
+.search-btn {
+  height: 100%;
+  width: 28%;
+  margin: 5px;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #0e1e82;
+  border-width: 0px;
+}

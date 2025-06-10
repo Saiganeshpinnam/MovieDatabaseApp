@@ -2,6 +2,8 @@ import {Component} from 'react'
 
 import Loader from 'react-loader-spinner'
 
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+
 import Header from '../Header'
 
 import './index.css'
@@ -55,7 +57,8 @@ class SingleMovieDetails extends Component {
 
         apiStatus: apiStatusConstants.success,
       })
-    } else if (response.status === 401) {
+    }
+    if (response.status === 401) {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -84,7 +87,8 @@ class SingleMovieDetails extends Component {
 
         apiStatus: apiStatusConstants.success,
       })
-    } else {
+    }
+    if (movieCastResponse.status === 401) {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -96,8 +100,16 @@ class SingleMovieDetails extends Component {
     // console.log(movieDetailsSection)
     const {castId, movieCast} = movieCastDetails
 
-    const {id, name, image, ratings, duration, releaseDate, overview, genre} =
-      movieDetailsSection
+    const {
+      id,
+      name,
+      image,
+      ratings,
+      duration,
+      releaseDate,
+      overview,
+      genre,
+    } = movieDetailsSection
     //  console.log(genre)
     return (
       <>
@@ -166,7 +178,7 @@ class SingleMovieDetails extends Component {
     <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
   )
 
-  renderFailureView = () => <h1>Not Found</h1>
+  renderSpecificDetailsFailureView = () => <h1>Not Found</h1>
 
   renderSwitch = () => {
     const {apiStatus} = this.state
@@ -174,7 +186,7 @@ class SingleMovieDetails extends Component {
       case apiStatusConstants.success:
         return this.renderSpecificMovieDetails()
       case apiStatusConstants.failure:
-        return this.renderFailureView()
+        return this.renderSpecificDetailsFailureView()
       case apiStatusConstants.inProgress:
         return this.renderLoadingView()
       default:
@@ -183,6 +195,10 @@ class SingleMovieDetails extends Component {
   }
 
   render() {
+    // const {apiStatus} = this.state
+
+    // const {castId, originalName, characterName, castImage} = movieCastDetails
+
     return <>{this.renderSwitch()}</>
   }
 }
