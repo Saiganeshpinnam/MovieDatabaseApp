@@ -57,8 +57,7 @@ class SingleMovieDetails extends Component {
 
         apiStatus: apiStatusConstants.success,
       })
-    }
-     else {
+    } else {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })

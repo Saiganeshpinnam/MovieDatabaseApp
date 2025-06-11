@@ -8,6 +8,10 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
 import Header from '../Header'
 
+import NotFound from '../NotFound'
+
+import SearchedMovieContext from '../../context/SearchedMovieContext'
+
 import './index.css'
 
 const apiStatusConstants = {
@@ -18,24 +22,35 @@ const apiStatusConstants = {
 }
 
 class TopRatedMovies extends Component {
+  static contextType = SearchedMovieContext
+
   state = {
     topRatedMoviesData: [],
-    topRatedMoviesPageNumber: 1,
+
     apiStatus: apiStatusConstants.initial,
   }
 
   componentDidMount() {
-    this.getTopRatedMovies()
+    const {pageNumber} = this.context
+    this.getTopRatedMovies(pageNumber)
   }
 
-  getTopRatedMovies = async () => {
+  componentDidUpdate(prevProps, prevState) {
+    const {pageNumber} = this.context
+    if (this.prevPageNumber !== pageNumber) {
+      this.getTopRatedMovies(pageNumber)
+    }
+    this.prevPageNumber = pageNumber
+  }
+
+  getTopRatedMovies = async pageNumber => {
     const {apiStatus} = this.state
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
-    const {topRatedMoviesPageNumber} = this.state
+
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/top_rated?api_key=6de6464c60dc6e29adb8a0eb4dec6103&language=en-US&page=${topRatedMoviesPageNumber}`,
+      `https://api.themoviedb.org/3/movie/top_rated?api_key=6de6464c60dc6e29adb8a0eb4dec6103&language=en-US&page=${pageNumber}`,
     )
     if (response.ok === true) {
       const data = await response.json()
@@ -120,23 +135,6 @@ class TopRatedMovies extends Component {
             </li>
           ))}
         </ul>
-        <div className="pagination-container">
-          <button
-            type="button"
-            className="pagination-btn"
-            onClick={this.onClickingPrevBtn}
-          >
-            Prev
-          </button>
-          <p className="page-number">{topRatedMoviesPageNumber}</p>
-          <button
-            type="button"
-            className="pagination-btn"
-            onClick={this.onClickingNxtBtn}
-          >
-            Next
-          </button>
-        </div>
       </div>
     )
   }
@@ -145,7 +143,7 @@ class TopRatedMovies extends Component {
     <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
   )
 
-  renderFailureView = () => <h1>Not Found</h1>
+  renderFailureView = () => <NotFound />
 
   renderSwitch = () => {
     const {apiStatus} = this.state

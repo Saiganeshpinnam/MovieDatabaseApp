@@ -56,24 +56,26 @@ class App extends Component {
     const {userInputSearch, pageNumber} = this.state
 
     return (
-      <SearchedMovieContext.Provider
-        value={{
-          userInputSearch,
-          updateSearchedMovie: this.updateSearchedMovie,
-          pageNumber,
-          renderPrevPage: this.renderPrevPage,
-          renderNextPage: this.renderNextPage,
-        }}
-      >
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/top-rated" component={TopRatedMovies} />
-          <Route exact path="/upcoming" component={UpcomingMovies} />
-          <Route exact path="/movie/:id" component={SingleMovieDetails} />
-          <Route exact path="/searched-movies" component={SearchedMovies} />
-        </Switch>
-        <Pagination />
-      </SearchedMovieContext.Provider>
+      <div className="home-bg-container">
+        <SearchedMovieContext.Provider
+          value={{
+            userInputSearch,
+            updateSearchedMovie: this.updateSearchedMovie,
+            pageNumber,
+            renderPrevPage: this.renderPrevPage,
+            renderNextPage: this.renderNextPage,
+          }}
+        >
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/top-rated" component={TopRatedMovies} />
+            <Route exact path="/upcoming" component={UpcomingMovies} />
+            <Route exact path="/movie/:id" component={SingleMovieDetails} />
+            <Route exact path="/searched-movies" component={SearchedMovies} />
+          </Switch>
+          <Pagination />
+        </SearchedMovieContext.Provider>
+      </div>
     )
   }
 }

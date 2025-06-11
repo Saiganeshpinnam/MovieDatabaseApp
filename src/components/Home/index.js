@@ -8,6 +8,8 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
 import Header from '../Header'
 
+import NotFound from '../NotFound'
+
 import Pagination from '../Pagination'
 
 import SearchedMovieContext from '../../context/SearchedMovieContext'
@@ -22,13 +24,24 @@ const apiStatusConstants = {
 }
 
 class Home extends Component {
+  static contextType = SearchedMovieContext
+
   state = {
     popularMoviesData: [],
     apiStatus: apiStatusConstants.initial,
   }
 
   componentDidMount() {
-    this.getPopularMovies()
+    const {pageNumber} = this.context
+    this.getPopularMovies(pageNumber)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const {pageNumber} = this.context
+    if (this.prevPageNumber !== pageNumber) {
+      this.getPopularMovies(pageNumber)
+    }
+    this.prevPageNumber = pageNumber
   }
 
   getPopularMovies = async pageNumber => {
@@ -65,53 +78,36 @@ class Home extends Component {
 
   renderHomeMovieDetails = () => {
     const {popularMoviesData} = this.state
+
     return (
-      <SearchedMovieContext.Consumer>
-        {value => {
-          const {renderPrevPage, renderNextPage, pageNumber} = value
-
-          const getPopularMoviesData = this.getPopularMovies(pageNumber)
-
-          return (
-            <div className="home-bg-container">
-              <Header />
-              <ul className="popular-movies-container">
-                {popularMoviesData.map(eachPopularMovie => (
-                  <li
-                    key={eachPopularMovie.id}
-                    className="each-popular-movie-item"
-                  >
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${eachPopularMovie.posterPath}`}
-                      alt={eachPopularMovie.title}
-                      className="movie-poster-image"
-                    />
-                    <div className="title-rating-btn-container">
-                      <div className="title-rating-container">
-                        <p className="movie-title">{eachPopularMovie.title}</p>
-                        <p className="movie-rating">
-                          {eachPopularMovie.voteAverage}
-                        </p>
-                      </div>
-                      <Link
-                        to={`/movie/${eachPopularMovie.id}`}
-                        className="view-details-btn-container"
-                      >
-                        <button type="button" className="view-details-btn">
-                          View Details
-                        </button>
-                      </Link>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <div className="pagination-container">
-                <Pagination />
+      <div className="home-bg-container">
+        <Header />
+        <ul className="popular-movies-container">
+          {popularMoviesData.map(eachPopularMovie => (
+            <li key={eachPopularMovie.id} className="each-popular-movie-item">
+              <img
+                src={`https://image.tmdb.org/t/p/w500${eachPopularMovie.posterPath}`}
+                alt={eachPopularMovie.title}
+                className="movie-poster-image"
+              />
+              <div className="title-rating-btn-container">
+                <div className="title-rating-container">
+                  <p className="movie-title">{eachPopularMovie.title}</p>
+                  <p className="movie-rating">{eachPopularMovie.voteAverage}</p>
+                </div>
+                <Link
+                  to={`/movie/${eachPopularMovie.id}`}
+                  className="view-details-btn-container"
+                >
+                  <button type="button" className="view-details-btn">
+                    View Details
+                  </button>
+                </Link>
               </div>
-            </div>
-          )
-        }}
-      </SearchedMovieContext.Consumer>
+            </li>
+          ))}
+        </ul>
+      </div>
     )
   }
 
@@ -119,12 +115,7 @@ class Home extends Component {
     <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
   )
 
-  renderFailureView = () => (
-    <>
-      <Header />
-      <h1>Not Found</h1>
-    </>
-  )
+  renderFailureView = () => <NotFound />
 
   renderSwitch = () => {
     const {apiStatus} = this.state

@@ -14,23 +14,25 @@ const Pagination = () => (
         renderNextPage()
       }
       return (
-        <>
-          <button
-            type="button"
-            className="pagination-btn"
-            onClick={onClickingPrevBtn}
-          >
-            Prev
-          </button>
-          <p className="page-number">{pageNumber}</p>
-          <button
-            type="button"
-            className="pagination-btn"
-            onClick={onClickingNxtBtn}
-          >
-            Next
-          </button>
-        </>
+        <div className="pagination-container">
+          <>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={onClickingPrevBtn}
+            >
+              Prev
+            </button>
+            <p className="page-number">{pageNumber}</p>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={onClickingNxtBtn}
+            >
+              Next
+            </button>
+          </>
+        </div>
       )
     }}
   </SearchedMovieContext.Consumer>
