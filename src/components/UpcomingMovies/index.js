@@ -75,8 +75,8 @@ class UpcomingMovies extends Component {
     }
   }
 
-  upcomingMovies = () => {
-    ;<SearchedMovieContext.Consumer>
+  upcomingMovies = () => (
+    <SearchedMovieContext.Consumer>
       {value => {
         const {renderNextPage, renderPrevPage, pageNumber} = value
 
@@ -141,7 +141,7 @@ class UpcomingMovies extends Component {
         )
       }}
     </SearchedMovieContext.Consumer>
-  }
+  )
 
   renderLoadingView = () => (
     <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />

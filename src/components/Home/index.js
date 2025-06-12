@@ -10,7 +10,6 @@ import Header from '../Header'
 
 import NotFound from '../NotFound'
 
-
 import SearchedMovieContext from '../../context/SearchedMovieContext'
 
 import './index.css'
@@ -75,8 +74,8 @@ class Home extends Component {
     }
   }
 
-  renderHomeMovieDetails = () => {
-    ;<SearchedMovieContext.Consumer>
+  renderHomeMovieDetails = () => (
+    <SearchedMovieContext.Consumer>
       {value => {
         const {renderNextPage, renderPrevPage, pageNumber} = value
 
@@ -143,7 +142,7 @@ class Home extends Component {
         )
       }}
     </SearchedMovieContext.Consumer>
-  }
+  )
 
   renderLoadingView = () => (
     <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
