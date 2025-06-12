@@ -38,7 +38,7 @@ class Header extends Component {
               </Link>
               <div className="search-container">
                 <input
-                  type="search"
+                  type="text"
                   className="input-element"
                   placeholder="Enter the Movie Name.."
                   onChange={this.onChangingMovieName}
