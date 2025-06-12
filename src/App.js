@@ -14,8 +14,6 @@ import SearchedMovies from './components/SearchedMovies'
 
 import SearchedMovieContext from './context/SearchedMovieContext'
 
-import Pagination from './components/Pagination'
-
 import './App.css'
 
 // write your code here
@@ -73,7 +71,6 @@ class App extends Component {
             <Route exact path="/movie/:id" component={SingleMovieDetails} />
             <Route exact path="/searched-movies" component={SearchedMovies} />
           </Switch>
-          <Pagination />
         </SearchedMovieContext.Provider>
       </div>
     )

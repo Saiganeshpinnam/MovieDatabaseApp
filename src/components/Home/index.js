@@ -10,7 +10,6 @@ import Header from '../Header'
 
 import NotFound from '../NotFound'
 
-import Pagination from '../Pagination'
 
 import SearchedMovieContext from '../../context/SearchedMovieContext'
 
@@ -77,38 +76,73 @@ class Home extends Component {
   }
 
   renderHomeMovieDetails = () => {
-    const {popularMoviesData} = this.state
+    ;<SearchedMovieContext.Consumer>
+      {value => {
+        const {renderNextPage, renderPrevPage, pageNumber} = value
 
-    return (
-      <div className="home-bg-container">
-        <Header />
-        <ul className="popular-movies-container">
-          {popularMoviesData.map(eachPopularMovie => (
-            <li key={eachPopularMovie.id} className="each-popular-movie-item">
-              <img
-                src={`https://image.tmdb.org/t/p/w500${eachPopularMovie.posterPath}`}
-                alt={eachPopularMovie.title}
-                className="movie-poster-image"
-              />
-              <div className="title-rating-btn-container">
-                <div className="title-rating-container">
-                  <p className="movie-title">{eachPopularMovie.title}</p>
-                  <p className="movie-rating">{eachPopularMovie.voteAverage}</p>
-                </div>
-                <Link
-                  to={`/movie/${eachPopularMovie.id}`}
-                  className="view-details-btn-container"
+        const onClickingPrevBtn = () => {
+          renderPrevPage()
+        }
+        const onClickingNxtBtn = () => {
+          renderNextPage()
+        }
+        const {popularMoviesData} = this.state
+        return (
+          <div className="home-bg-container">
+            <Header />
+            <ul className="popular-movies-container">
+              {popularMoviesData.map(eachPopularMovie => (
+                <li
+                  key={eachPopularMovie.id}
+                  className="each-popular-movie-item"
                 >
-                  <button type="button" className="view-details-btn">
-                    View Details
-                  </button>
-                </Link>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${eachPopularMovie.posterPath}`}
+                    alt={eachPopularMovie.title}
+                    className="movie-poster-image"
+                  />
+                  <div className="title-rating-btn-container">
+                    <div className="title-rating-container">
+                      <p className="movie-title">{eachPopularMovie.title}</p>
+                      <p className="movie-rating">
+                        {eachPopularMovie.voteAverage}
+                      </p>
+                    </div>
+                    <Link
+                      to={`/movie/${eachPopularMovie.id}`}
+                      className="view-details-btn-container"
+                    >
+                      <button type="button" className="view-details-btn">
+                        View Details
+                      </button>
+                    </Link>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="pagination-container">
+              <>
+                <button
+                  type="button"
+                  className="pagination-btn"
+                  onClick={onClickingPrevBtn}
+                >
+                  Prev
+                </button>
+                <p className="page-number">{pageNumber}</p>
+                <button
+                  type="button"
+                  className="pagination-btn"
+                  onClick={onClickingNxtBtn}
+                >
+                  Next
+                </button>
+              </>
+            </div>
+          </div>
+        )
+      }}
+    </SearchedMovieContext.Consumer>
   }
 
   renderLoadingView = () => (

@@ -6,6 +6,8 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
 import Header from '../Header'
 
+import SearchedMovieContext from '../../context/SearchedMovieContext'
+
 import './index.css'
 
 const apiStatusConstants = {
@@ -16,6 +18,8 @@ const apiStatusConstants = {
 }
 
 class SingleMovieDetails extends Component {
+  static contextType = SearchedMovieContext
+
   state = {
     movieDetailsSection: [],
     movieCastDetails: {},
@@ -96,73 +100,111 @@ class SingleMovieDetails extends Component {
 
   renderSpecificMovieDetails = () => {
     const {movieDetailsSection, movieCastDetails} = this.state
+
     // console.log(movieDetailsSection)
     const {castId, movieCast} = movieCastDetails
 
     const {id, name, image, ratings, duration, releaseDate, overview, genre} =
-      movieDetailsSection
-    //  console.log(genre)
-    return (
-      <>
-        <Header />
-        <div className="each-movie-description-container">
-          <img
-            src={`https://image.tmdb.org/t/p/w500${image}`}
-            alt={name}
-            className="specific-movie-image"
-          />
+      movieDetailsSection(
+        //  console.log(genre)
+        <SearchedMovieContext.Consumer>
+          {value => {
+            const {renderNextPage, renderPrevPage, pageNumber} = value
 
-          <div className="movie-text-description-container">
-            <p className="specific-movie-title">{name}</p>
-            <ul className="genres-value-container">
-              {genre.map(eachMovieGenre => (
-                <li key={eachMovieGenre.id}>
-                  <p className="each-genre">{eachMovieGenre.name}</p>
-                </li>
-              ))}
-            </ul>
-            <p className="movie-misc-text">
-              Rating: <span className="movie-misc-value">{ratings}/10</span>
-            </p>
+            const onClickingPrevBtn = () => {
+              renderPrevPage()
+            }
+            const onClickingNxtBtn = () => {
+              renderNextPage()
+            }
 
-            <p className="movie-misc-text">
-              Duration:
-              <span className="movie-misc-value"> {duration} Minutes</span>
-            </p>
-            <p className="movie-misc-text">
-              Release Date:
-              <span className="movie-misc-value"> {releaseDate}</span>
-            </p>
-            <p className="movie-overview">{overview}</p>
-          </div>
-          {Array.isArray(movieCast) && movieCast.length > 0 && (
-            <ul className="movie-cast-container">
-              {movieCast.map(eachCast => (
-                <li key={eachCast.id} className="each-cast-item">
+            return (
+              <>
+                <Header />
+                <div className="each-movie-description-container">
                   <img
-                    src={`https://image.tmdb.org/t/p/w500${eachCast.profile_path}`}
-                    alt={eachCast.original_name}
-                    className="cast-image"
+                    src={`https://image.tmdb.org/t/p/w500${image}`}
+                    alt={name}
+                    className="specific-movie-image"
                   />
-                  <p className="cast-name">
-                    Original Name:{' '}
-                    <span className="cast-name-value">
-                      {eachCast.original_name}
-                    </span>
-                  </p>
-                  <p className="cast-name">
-                    Character Name:{' '}
-                    <span className="cast-name-value">
-                      {eachCast.character}
-                    </span>
-                  </p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </>
-    )
+
+                  <div className="movie-text-description-container">
+                    <p className="specific-movie-title">{name}</p>
+                    <ul className="genres-value-container">
+                      {genre.map(eachMovieGenre => (
+                        <li key={eachMovieGenre.id}>
+                          <p className="each-genre">{eachMovieGenre.name}</p>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="movie-misc-text">
+                      Rating:{' '}
+                      <span className="movie-misc-value">{ratings}/10</span>
+                    </p>
+
+                    <p className="movie-misc-text">
+                      Duration:
+                      <span className="movie-misc-value">
+                        {' '}
+                        {duration} Minutes
+                      </span>
+                    </p>
+                    <p className="movie-misc-text">
+                      Release Date:
+                      <span className="movie-misc-value"> {releaseDate}</span>
+                    </p>
+                    <p className="movie-overview">{overview}</p>
+                  </div>
+                  {Array.isArray(movieCast) && movieCast.length > 0 && (
+                    <ul className="movie-cast-container">
+                      {movieCast.map(eachCast => (
+                        <li key={eachCast.id} className="each-cast-item">
+                          <img
+                            src={`https://image.tmdb.org/t/p/w500${eachCast.profile_path}`}
+                            alt={eachCast.original_name}
+                            className="cast-image"
+                          />
+                          <p className="cast-name">
+                            Original Name:{' '}
+                            <span className="cast-name-value">
+                              {eachCast.original_name}
+                            </span>
+                          </p>
+                          <p className="cast-name">
+                            Character Name:{' '}
+                            <span className="cast-name-value">
+                              {eachCast.character}
+                            </span>
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <div className="pagination-container">
+                    <>
+                      <button
+                        type="button"
+                        className="pagination-btn"
+                        onClick={onClickingPrevBtn}
+                      >
+                        Prev
+                      </button>
+                      <p className="page-number">{pageNumber}</p>
+                      <button
+                        type="button"
+                        className="pagination-btn"
+                        onClick={onClickingNxtBtn}
+                      >
+                        Next
+                      </button>
+                    </>
+                  </div>
+                </div>
+              </>
+            )
+          }}
+        </SearchedMovieContext.Consumer>,
+      )
   }
 
   renderLoadingView = () => (

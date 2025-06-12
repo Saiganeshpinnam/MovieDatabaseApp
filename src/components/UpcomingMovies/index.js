@@ -26,7 +26,7 @@ class UpcomingMovies extends Component {
 
   state = {
     upcomingMoviesData: [],
-    upcomingMoviesPageNumber: 1,
+
     apiStatus: apiStatusConstants.initial,
   }
 
@@ -75,65 +75,72 @@ class UpcomingMovies extends Component {
     }
   }
 
-  onClickingPrevBtn = () => {
-    const {upcomingMoviesPageNumber} = this.state
-    if (upcomingMoviesPageNumber > 1) {
-      this.setState(
-        prevState => ({
-          upcomingMoviesPageNumber: prevState.upcomingMoviesPageNumber - 1,
-        }),
-        this.getUpcomingMovies,
-      )
-    } else {
-      this.setState(
-        {
-          upcomingMoviesPageNumber: 1,
-        },
-        this.getUpcomingMovies,
-      )
-    }
-  }
-
-  onClickingNxtBtn = () => {
-    this.setState(
-      prevState => ({
-        upcomingMoviesPageNumber: prevState.upcomingMoviesPageNumber + 1,
-      }),
-      this.getUpcomingMovies,
-    )
-  }
-
   upcomingMovies = () => {
-    const {upcomingMoviesData, upcomingMoviesPageNumber} = this.state
-    //  console.log(upcomingMoviesData)
-    return (
-      <div className="upcoming-bg-container">
-        <Header />
-        <ul className="upcoming-movies-container">
-          {upcomingMoviesData.map(eachUpcomingMovie => (
-            <li key={eachUpcomingMovie.id} className="each-upcoming-movie-item">
-              <img
-                src={`https://image.tmdb.org/t/p/w500${eachUpcomingMovie.posterPath}`}
-                alt={eachUpcomingMovie.title}
-                className="movie-poster-image"
-              />
-              <div className="title-rating-container">
-                <p className="movie-title">{eachUpcomingMovie.title}</p>
-                <p className="movie-rating">{eachUpcomingMovie.voteAverage}</p>
-              </div>
-              <Link
-                to={`/movie/${eachUpcomingMovie.id}`}
-                className="view-details-btn-container"
-              >
-                <button type="button" className="view-details-btn">
-                  View Details
+    ;<SearchedMovieContext.Consumer>
+      {value => {
+        const {renderNextPage, renderPrevPage, pageNumber} = value
+
+        const onClickingPrevBtn = () => {
+          renderPrevPage()
+        }
+        const onClickingNxtBtn = () => {
+          renderNextPage()
+        }
+        const {upcomingMoviesData} = this.state
+        return (
+          <div className="upcoming-bg-container">
+            <Header />
+            <ul className="upcoming-movies-container">
+              {upcomingMoviesData.map(eachUpcomingMovie => (
+                <li
+                  key={eachUpcomingMovie.id}
+                  className="each-upcoming-movie-item"
+                >
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${eachUpcomingMovie.posterPath}`}
+                    alt={eachUpcomingMovie.title}
+                    className="movie-poster-image"
+                  />
+                  <div className="title-rating-container">
+                    <p className="movie-title">{eachUpcomingMovie.title}</p>
+                    <p className="movie-rating">
+                      {eachUpcomingMovie.voteAverage}
+                    </p>
+                  </div>
+                  <Link
+                    to={`/movie/${eachUpcomingMovie.id}`}
+                    className="view-details-btn-container"
+                  >
+                    <button type="button" className="view-details-btn">
+                      View Details
+                    </button>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="pagination-container">
+              <>
+                <button
+                  type="button"
+                  className="pagination-btn"
+                  onClick={onClickingPrevBtn}
+                >
+                  Prev
                 </button>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
+                <p className="page-number">{pageNumber}</p>
+                <button
+                  type="button"
+                  className="pagination-btn"
+                  onClick={onClickingNxtBtn}
+                >
+                  Next
+                </button>
+              </>
+            </div>
+          </div>
+        )
+      }}
+    </SearchedMovieContext.Consumer>
   }
 
   renderLoadingView = () => (
