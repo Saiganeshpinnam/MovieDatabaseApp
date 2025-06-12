@@ -31,8 +31,9 @@ class SearchedMovies extends Component {
   }
 
   getSearchedMovies = async userInputSearch => {
+    const {pageNumber} = this.state
     const searchedMoviesResponse = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=6de6464c60dc6e29adb8a0eb4dec6103&language=en-US&query=${userInputSearch}&page=1`,
+      `https://api.themoviedb.org/3/search/movie?api_key=6de6464c60dc6e29adb8a0eb4dec6103&language=en-US&query=${userInputSearch}&page=${pageNumber}`,
     )
 
     if (searchedMoviesResponse.ok === true) {
@@ -68,7 +69,7 @@ class SearchedMovies extends Component {
         prevState => ({
           pageNumber: prevState.pageNumber - 1,
         }),
-        this.getPopularMovies,
+        this.getSearchedMovies,
       )
     } else {
       this.setState(

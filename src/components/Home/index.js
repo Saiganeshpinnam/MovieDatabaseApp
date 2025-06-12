@@ -36,7 +36,6 @@ class Home extends Component {
   }
 
   getPopularMovies = async () => {
-   
     const {pageNumber} = this.state
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
