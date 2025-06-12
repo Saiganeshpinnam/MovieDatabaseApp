@@ -23,6 +23,7 @@ class SearchedMovies extends Component {
   state = {
     searchedMoviesData: [],
     apiStatus: apiStatusConstants.initial,
+    pageNumber: 1,
   }
 
   componentDidMount() {
@@ -60,53 +61,86 @@ class SearchedMovies extends Component {
     }
   }
 
-  renderSearchedMovieDetails = () => {
-    const {searchedMoviesData} = this.state
-    return (
-      <SearchedMovieContext.Consumer>
-        {value => {
-          const {userInputSearch} = value
-          console.log(userInputSearch)
-          const getSeachedMoviesData = this.getSearchedMovies(userInputSearch)
-          console.log(getSeachedMoviesData)
+  onClickingSearchMoviesPrevBtn = () => {
+    const {pageNumber} = this.state
+    if (pageNumber > 1) {
+      this.setState(
+        prevState => ({
+          pageNumber: prevState.pageNumber - 1,
+        }),
+        this.getPopularMovies,
+      )
+    } else {
+      this.setState(
+        {
+          pageNumber: 1,
+        },
+        this.getSearchedMovies,
+      )
+    }
+  }
 
-          return (
-            <div className="searched-movies-bg-container">
-              <Header />
-              <ul className="searched-movies-container">
-                {searchedMoviesData.map(eachSearchedMovie => (
-                  <li
-                    key={eachSearchedMovie.id}
-                    className="each-searched-movie-item"
-                  >
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${eachSearchedMovie.backdropPath}`}
-                      alt={eachSearchedMovie.title}
-                      className="movie-poster-image"
-                    />
-                    <div className="title-rating-btn-container">
-                      <div className="title-rating-container">
-                        <p className="movie-title">{eachSearchedMovie.title}</p>
-                        <p className="movie-rating">
-                          {eachSearchedMovie.voteAverage}
-                        </p>
-                      </div>
-                      <Link
-                        to={`/movie/${eachSearchedMovie.id}`}
-                        className="view-details-btn-container"
-                      >
-                        <button type="button" className="view-details-btn">
-                          View Details
-                        </button>
-                      </Link>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        }}
-      </SearchedMovieContext.Consumer>
+  onClickingSearchMoviesNxtBtn = () => {
+    this.setState(
+      prevState => ({
+        pageNumber: prevState.pageNumber + 1,
+      }),
+      this.getSearchedMovies,
+    )
+  }
+
+  renderSearchedMovieDetails = () => {
+    const {searchedMoviesData, pageNumber} = this.state
+    return (
+      <div className="searched-movies-bg-container">
+        <Header />
+        <ul className="searched-movies-container">
+          {searchedMoviesData.map(eachSearchedMovie => (
+            <li key={eachSearchedMovie.id} className="each-searched-movie-item">
+              <img
+                src={`https://image.tmdb.org/t/p/w500${eachSearchedMovie.backdropPath}`}
+                alt={eachSearchedMovie.title}
+                className="movie-poster-image"
+              />
+              <div className="title-rating-btn-container">
+                <div className="title-rating-container">
+                  <p className="movie-title">{eachSearchedMovie.title}</p>
+                  <p className="movie-rating">
+                    {eachSearchedMovie.voteAverage}
+                  </p>
+                </div>
+                <Link
+                  to={`/movie/${eachSearchedMovie.id}`}
+                  className="view-details-btn-container"
+                >
+                  <button type="button" className="view-details-btn">
+                    View Details
+                  </button>
+                </Link>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="pagination-container">
+          <>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={this.onClickingSearchMoviesPrevBtn}
+            >
+              Prev
+            </button>
+            <p className="page-number">{pageNumber}</p>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={this.onClickingSearchMoviesNxtBtn}
+            >
+              Next
+            </button>
+          </>
+        </div>
+      </div>
     )
   }
 

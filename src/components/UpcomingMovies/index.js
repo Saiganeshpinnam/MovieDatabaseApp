@@ -22,11 +22,9 @@ const apiStatusConstants = {
 }
 
 class UpcomingMovies extends Component {
-  static contextType = SearchedMovieContext
-
   state = {
     upcomingMoviesData: [],
-
+    pageNumber: 1,
     apiStatus: apiStatusConstants.initial,
   }
 
@@ -35,16 +33,8 @@ class UpcomingMovies extends Component {
     this.getUpcomingMovies(pageNumber)
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const {pageNumber} = this.context
-    if (this.prevPageNumber !== pageNumber) {
-      this.getUpcomingMovies(pageNumber)
-    }
-    this.prevPageNumber = pageNumber
-  }
-
-  getUpcomingMovies = async pageNumber => {
-    const {apiStatus} = this.state
+  getUpcomingMovies = async () => {
+    const {pageNumber} = this.state
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
@@ -75,73 +65,84 @@ class UpcomingMovies extends Component {
     }
   }
 
-  upcomingMovies = () => (
-    <SearchedMovieContext.Consumer>
-      {value => {
-        const {renderNextPage, renderPrevPage, pageNumber} = value
+  onClickingUpcomingPrevBtn = () => {
+    const {pageNumber} = this.state
+    if (pageNumber > 1) {
+      this.setState(
+        prevState => ({
+          pageNumber: prevState.pageNumber - 1,
+        }),
+        this.getUpcomingMovies,
+      )
+    } else {
+      this.setState(
+        {
+          pageNumber: 1,
+        },
+        this.getUpcomingMovies,
+      )
+    }
+  }
 
-        const onClickingPrevBtn = () => {
-          renderPrevPage()
-        }
-        const onClickingNxtBtn = () => {
-          renderNextPage()
-        }
-        const {upcomingMoviesData} = this.state
-        return (
-          <div className="upcoming-bg-container">
-            <Header />
-            <ul className="upcoming-movies-container">
-              {upcomingMoviesData.map(eachUpcomingMovie => (
-                <li
-                  key={eachUpcomingMovie.id}
-                  className="each-upcoming-movie-item"
-                >
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${eachUpcomingMovie.posterPath}`}
-                    alt={eachUpcomingMovie.title}
-                    className="movie-poster-image"
-                  />
-                  <div className="title-rating-container">
-                    <p className="movie-title">{eachUpcomingMovie.title}</p>
-                    <p className="movie-rating">
-                      {eachUpcomingMovie.voteAverage}
-                    </p>
-                  </div>
-                  <Link
-                    to={`/movie/${eachUpcomingMovie.id}`}
-                    className="view-details-btn-container"
-                  >
-                    <button type="button" className="view-details-btn">
-                      View Details
-                    </button>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div className="pagination-container">
-              <>
-                <button
-                  type="button"
-                  className="pagination-btn"
-                  onClick={onClickingPrevBtn}
-                >
-                  Prev
+  onClickingUpcomingNxtBtn = () => {
+    this.setState(
+      prevState => ({
+        pageNumber: prevState.pageNumber + 1,
+      }),
+      this.getUpcomingMovies,
+    )
+  }
+
+  upcomingMovies = () => {
+    const {upcomingMoviesData, pageNumber} = this.state
+    return (
+      <div className="upcoming-bg-container">
+        <Header />
+        <ul className="upcoming-movies-container">
+          {upcomingMoviesData.map(eachUpcomingMovie => (
+            <li key={eachUpcomingMovie.id} className="each-upcoming-movie-item">
+              <img
+                src={`https://image.tmdb.org/t/p/w500${eachUpcomingMovie.posterPath}`}
+                alt={eachUpcomingMovie.title}
+                className="movie-poster-image"
+              />
+              <div className="title-rating-container">
+                <p className="movie-title">{eachUpcomingMovie.title}</p>
+                <p className="movie-rating">{eachUpcomingMovie.voteAverage}</p>
+              </div>
+              <Link
+                to={`/movie/${eachUpcomingMovie.id}`}
+                className="view-details-btn-container"
+              >
+                <button type="button" className="view-details-btn">
+                  View Details
                 </button>
-                <p className="page-number">{pageNumber}</p>
-                <button
-                  type="button"
-                  className="pagination-btn"
-                  onClick={onClickingNxtBtn}
-                >
-                  Next
-                </button>
-              </>
-            </div>
-          </div>
-        )
-      }}
-    </SearchedMovieContext.Consumer>
-  )
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="pagination-container">
+          <>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={this.onClickingUpcomingPrevBtn}
+            >
+              Prev
+            </button>
+            <p className="page-number">{pageNumber}</p>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={this.onClickingUpcomingNxtBtn}
+            >
+              Next
+            </button>
+          </>
+        </div>
+      </div>
+    )
+  }
 
   renderLoadingView = () => (
     <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />

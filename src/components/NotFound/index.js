@@ -4,8 +4,10 @@ import Pagination from '../Pagination'
 
 import './index.css'
 
-const NotFound = () => {
-  ;<SearchedMovieContext.Consumer>
+import SearchedMovieContext from '../../context/SearchedMovieContext'
+
+const NotFound = () => (
+  <SearchedMovieContext.Consumer>
     {value => {
       const {renderNextPage, renderPrevPage, pageNumber} = value
 
@@ -47,5 +49,5 @@ const NotFound = () => {
       )
     }}
   </SearchedMovieContext.Consumer>
-}
+)
 export default NotFound
