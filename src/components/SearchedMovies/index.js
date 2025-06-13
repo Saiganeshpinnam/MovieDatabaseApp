@@ -46,8 +46,6 @@ class SearchedMovies extends Component {
   //   }
   // }
 
- 
-
   getSearchedMovies = async userInputSearch => {
     const {pageNumber} = this.state
 
@@ -121,7 +119,7 @@ class SearchedMovies extends Component {
             />
             <div className='title-rating-btn-container'>
               <div className='title-rating-container'>
-                <p className='movie-title'>{eachSearchedMovie.title}</p>
+                <h1 className='movie-title'>{eachSearchedMovie.title}</h1>
                 <p className='movie-rating'>{eachSearchedMovie.voteAverage}</p>
               </div>
               <Link
