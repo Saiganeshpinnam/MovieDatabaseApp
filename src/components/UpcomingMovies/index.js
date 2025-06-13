@@ -94,53 +94,31 @@ class UpcomingMovies extends Component {
   }
 
   upcomingMovies = () => {
-    const {upcomingMoviesData, pageNumber} = this.state
+    const {upcomingMoviesData} = this.state
     return (
-      <div className="upcoming-bg-container">
-        <Header />
-        <ul className="upcoming-movies-container">
-          {upcomingMoviesData.map(eachUpcomingMovie => (
-            <li key={eachUpcomingMovie.id} className="each-upcoming-movie-item">
-              <img
-                src={`https://image.tmdb.org/t/p/w500${eachUpcomingMovie.posterPath}`}
-                alt={eachUpcomingMovie.title}
-                className="movie-poster-image"
-              />
-              <div className="title-rating-container">
-                <p className="movie-title">{eachUpcomingMovie.title}</p>
-                <p className="movie-rating">{eachUpcomingMovie.voteAverage}</p>
-              </div>
-              <Link
-                to={`/movie/${eachUpcomingMovie.id}`}
-                className="view-details-btn-container"
-              >
-                <button type="button" className="view-details-btn">
-                  View Details
-                </button>
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <div className="pagination-container">
-          <>
-            <button
-              type="button"
-              className="pagination-btn"
-              onClick={this.onClickingUpcomingPrevBtn}
+      <ul className="upcoming-movies-container">
+        {upcomingMoviesData.map(eachUpcomingMovie => (
+          <li key={eachUpcomingMovie.id} className="each-upcoming-movie-item">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${eachUpcomingMovie.posterPath}`}
+              alt={eachUpcomingMovie.title}
+              className="movie-poster-image"
+            />
+            <div className="title-rating-container">
+              <p className="movie-title">{eachUpcomingMovie.title}</p>
+              <p className="movie-rating">{eachUpcomingMovie.voteAverage}</p>
+            </div>
+            <Link
+              to={`/movie/${eachUpcomingMovie.id}`}
+              className="view-details-btn-container"
             >
-              Prev
-            </button>
-            <p className="page-number">{pageNumber}</p>
-            <button
-              type="button"
-              className="pagination-btn"
-              onClick={this.onClickingUpcomingNxtBtn}
-            >
-              Next
-            </button>
-          </>
-        </div>
-      </div>
+              <button type="button" className="view-details-btn">
+                View Details
+              </button>
+            </Link>
+          </li>
+        ))}
+      </ul>
     )
   }
 
@@ -165,7 +143,32 @@ class UpcomingMovies extends Component {
   }
 
   render() {
-    return <>{this.renderSwitch()}</>
+    const {pageNumber} = this.state
+    return (
+      <div className="upcoming-bg-container">
+        <Header />
+        {this.renderSwitch()}{' '}
+        <div className="pagination-container">
+          <>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={this.onClickingUpcomingPrevBtn}
+            >
+              Prev
+            </button>
+            <p className="page-number">{pageNumber}</p>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={this.onClickingUpcomingNxtBtn}
+            >
+              Next
+            </button>
+          </>
+        </div>
+      </div>
+    )
   }
 }
 

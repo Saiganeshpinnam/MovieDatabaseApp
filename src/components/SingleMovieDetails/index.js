@@ -106,7 +106,7 @@ class SingleMovieDetails extends Component {
 
     return (
       <>
-        <Header />
+        
         <div className="each-movie-description-container">
           <img
             src={`https://image.tmdb.org/t/p/w500${image}`}
@@ -188,11 +188,9 @@ class SingleMovieDetails extends Component {
   }
 
   render() {
-    // const {apiStatus} = this.state
+ 
 
-    // const {castId, originalName, characterName, castImage} = movieCastDetails
-
-    return <>{this.renderSwitch()}</>
+    return <><Header />{this.renderSwitch()}</>
   }
 }
 

@@ -94,56 +94,31 @@ class TopRatedMovies extends Component {
   }
 
   topRatesMovies = () => {
-    const {topRatedMoviesData, pageNumber} = this.state
+    const {topRatedMoviesData} = this.state
     return (
-      <div className="top-rated-bg-container">
-        <Header />
-        <ul className="top-rated-movies-container">
-          {topRatedMoviesData.map(eachTopRatedMovie => (
-            <li
-              key={eachTopRatedMovie.id}
-              className="each-top-rated-movie-item"
+      <ul className="top-rated-movies-container">
+        {topRatedMoviesData.map(eachTopRatedMovie => (
+          <li key={eachTopRatedMovie.id} className="each-top-rated-movie-item">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${eachTopRatedMovie.posterPath}`}
+              alt={eachTopRatedMovie.title}
+              className="movie-poster-image"
+            />
+            <div className="title-rating-container">
+              <p className="movie-title">{eachTopRatedMovie.title}</p>
+              <p className="movie-rating">{eachTopRatedMovie.voteAverage}</p>
+            </div>
+            <Link
+              to={`/movie/${eachTopRatedMovie.id}`}
+              className="view-details-btn-container"
             >
-              <img
-                src={`https://image.tmdb.org/t/p/w500${eachTopRatedMovie.posterPath}`}
-                alt={eachTopRatedMovie.title}
-                className="movie-poster-image"
-              />
-              <div className="title-rating-container">
-                <p className="movie-title">{eachTopRatedMovie.title}</p>
-                <p className="movie-rating">{eachTopRatedMovie.voteAverage}</p>
-              </div>
-              <Link
-                to={`/movie/${eachTopRatedMovie.id}`}
-                className="view-details-btn-container"
-              >
-                <button type="button" className="view-details-btn">
-                  View Details
-                </button>
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <div className="pagination-container">
-          <>
-            <button
-              type="button"
-              className="pagination-btn"
-              onClick={this.onClickingTopRatedPrevBtn}
-            >
-              Prev
-            </button>
-            <p className="page-number">{pageNumber}</p>
-            <button
-              type="button"
-              className="pagination-btn"
-              onClick={this.onClickingTopRatedNxtBtn}
-            >
-              Next
-            </button>
-          </>
-        </div>
-      </div>
+              <button type="button" className="view-details-btn">
+                View Details
+              </button>
+            </Link>
+          </li>
+        ))}
+      </ul>
     )
   }
 
@@ -168,7 +143,32 @@ class TopRatedMovies extends Component {
   }
 
   render() {
-    return <>{this.renderSwitch()}</>
+    const {pageNumber} = this.state
+    return (
+      <div className="top-rated-bg-container">
+        <Header />
+        {this.renderSwitch()}
+        <div className="pagination-container">
+          <>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={this.onClickingTopRatedPrevBtn}
+            >
+              Prev
+            </button>
+            <p className="page-number">{pageNumber}</p>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={this.onClickingTopRatedNxtBtn}
+            >
+              Next
+            </button>
+          </>
+        </div>
+      </div>
+    )
   }
 }
 

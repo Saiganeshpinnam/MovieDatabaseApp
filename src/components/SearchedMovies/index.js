@@ -8,6 +8,8 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
 import Header from '../Header'
 
+import NotFound from '../NotFound'
+
 import SearchedMovieContext from '../../context/SearchedMovieContext'
 
 import './index.css'
@@ -20,6 +22,8 @@ const apiStatusConstants = {
 }
 
 class SearchedMovies extends Component {
+  static contextType = SearchedMovieContext
+
   state = {
     searchedMoviesData: [],
     apiStatus: apiStatusConstants.initial,
@@ -27,11 +31,26 @@ class SearchedMovies extends Component {
   }
 
   componentDidMount() {
-    this.getSearchedMovies()
+    const {userInputSearch} = this.context
+    this.getSearchedMovies(userInputSearch)
   }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   const {userInputSearch} = this.context
+
+  //   if (
+  //     prevState.pageNumber !== this.state.pageNumber ||
+  //     prevState.userInputSearch !== userInputSearch
+  //   ) {
+  //     this.getSearchedMovies(userInputSearch)
+  //   }
+  // }
+
+ 
 
   getSearchedMovies = async userInputSearch => {
     const {pageNumber} = this.state
+
     const searchedMoviesResponse = await fetch(
       `https://api.themoviedb.org/3/search/movie?api_key=6de6464c60dc6e29adb8a0eb4dec6103&language=en-US&query=${userInputSearch}&page=${pageNumber}`,
     )
@@ -54,8 +73,7 @@ class SearchedMovies extends Component {
 
         apiStatus: apiStatusConstants.success,
       })
-    }
-    if (searchedMoviesResponse.status === 401) {
+    } else {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -91,65 +109,41 @@ class SearchedMovies extends Component {
   }
 
   renderSearchedMovieDetails = () => {
-    const {searchedMoviesData, pageNumber} = this.state
+    const {searchedMoviesData} = this.state
     return (
-      <div className="searched-movies-bg-container">
-        <Header />
-        <ul className="searched-movies-container">
-          {searchedMoviesData.map(eachSearchedMovie => (
-            <li key={eachSearchedMovie.id} className="each-searched-movie-item">
-              <img
-                src={`https://image.tmdb.org/t/p/w500${eachSearchedMovie.backdropPath}`}
-                alt={eachSearchedMovie.title}
-                className="movie-poster-image"
-              />
-              <div className="title-rating-btn-container">
-                <div className="title-rating-container">
-                  <p className="movie-title">{eachSearchedMovie.title}</p>
-                  <p className="movie-rating">
-                    {eachSearchedMovie.voteAverage}
-                  </p>
-                </div>
-                <Link
-                  to={`/movie/${eachSearchedMovie.id}`}
-                  className="view-details-btn-container"
-                >
-                  <button type="button" className="view-details-btn">
-                    View Details
-                  </button>
-                </Link>
+      <ul className='searched-movies-container'>
+        {searchedMoviesData.map(eachSearchedMovie => (
+          <li key={eachSearchedMovie.id} className='each-searched-movie-item'>
+            <img
+              src={`https://image.tmdb.org/t/p/w500${eachSearchedMovie.backdropPath}`}
+              alt={eachSearchedMovie.title}
+              className='movie-poster-image'
+            />
+            <div className='title-rating-btn-container'>
+              <div className='title-rating-container'>
+                <p className='movie-title'>{eachSearchedMovie.title}</p>
+                <p className='movie-rating'>{eachSearchedMovie.voteAverage}</p>
               </div>
-            </li>
-          ))}
-        </ul>
-        <div className="pagination-container">
-          <>
-            <button
-              type="button"
-              className="pagination-btn"
-              onClick={this.onClickingSearchMoviesPrevBtn}
-            >
-              Prev
-            </button>
-            <p className="page-number">{pageNumber}</p>
-            <button
-              type="button"
-              className="pagination-btn"
-              onClick={this.onClickingSearchMoviesNxtBtn}
-            >
-              Next
-            </button>
-          </>
-        </div>
-      </div>
+              <Link
+                to={`/movie/${eachSearchedMovie.id}`}
+                className='view-details-btn-container'
+              >
+                <button type='button' className='view-details-btn'>
+                  View Details
+                </button>
+              </Link>
+            </div>
+          </li>
+        ))}
+      </ul>
     )
   }
 
   renderLoadingView = () => (
-    <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
+    <Loader type='TailSpin' color='#00BFFF' height={50} width={50} />
   )
 
-  renderSpecificDetailsFailureView = () => <h1>Not Found</h1>
+  renderSpecificDetailsFailureView = () => <NotFound />
 
   renderSwitch = () => {
     const {apiStatus} = this.state
@@ -166,7 +160,32 @@ class SearchedMovies extends Component {
   }
 
   render() {
-    return <>{this.renderSwitch()}</>
+    const {pageNumber} = this.state
+    return (
+      <div className='searched-movies-bg-container'>
+        <Header />
+        {this.renderSwitch()}
+        <div className='pagination-container'>
+          <>
+            <button
+              type='button'
+              className='pagination-btn'
+              onClick={this.onClickingSearchMoviesPrevBtn}
+            >
+              Prev
+            </button>
+            <p className='page-number'>{pageNumber}</p>
+            <button
+              type='button'
+              className='pagination-btn'
+              onClick={this.onClickingSearchMoviesNxtBtn}
+            >
+              Next
+            </button>
+          </>
+        </div>
+      </div>
+    )
   }
 }
 

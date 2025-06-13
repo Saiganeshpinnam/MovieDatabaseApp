@@ -49,6 +49,7 @@ class Header extends Component {
                   type="button"
                   onClick={() => this.onClickingSearchIcon(updateSearchedMovie)}
                   className="search-btn"
+                  data-testid="search"
                 >
                   Search
                 </button>

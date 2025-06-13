@@ -95,55 +95,33 @@ class Home extends Component {
   }
 
   renderHomeMovieDetails = () => {
-    const {popularMoviesData, pageNumber} = this.state
+    const {popularMoviesData} = this.state
     return (
-      <div className="home-bg-container">
-        <Header />
-        <ul className="popular-movies-container">
-          {popularMoviesData.map(eachPopularMovie => (
-            <li key={eachPopularMovie.id} className="each-popular-movie-item">
-              <img
-                src={`https://image.tmdb.org/t/p/w500${eachPopularMovie.posterPath}`}
-                alt={eachPopularMovie.title}
-                className="movie-poster-image"
-              />
-              <div className="title-rating-btn-container">
-                <div className="title-rating-container">
-                  <p className="movie-title">{eachPopularMovie.title}</p>
-                  <p className="movie-rating">{eachPopularMovie.voteAverage}</p>
-                </div>
-                <Link
-                  to={`/movie/${eachPopularMovie.id}`}
-                  className="view-details-btn-container"
-                >
-                  <button type="button" className="view-details-btn">
-                    View Details
-                  </button>
-                </Link>
+      <ul className="popular-movies-container">
+        {popularMoviesData.map(eachPopularMovie => (
+          <li key={eachPopularMovie.id} className="each-popular-movie-item">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${eachPopularMovie.posterPath}`}
+              alt={eachPopularMovie.title}
+              className="movie-poster-image"
+            />
+            <div className="title-rating-btn-container">
+              <div className="title-rating-container">
+                <p className="movie-title">{eachPopularMovie.title}</p>
+                <p className="movie-rating">{eachPopularMovie.voteAverage}</p>
               </div>
-            </li>
-          ))}
-        </ul>
-        <div className="pagination-container">
-          <>
-            <button
-              type="button"
-              className="pagination-btn"
-              onClick={this.onClickingHomePrevBtn}
-            >
-              Prev
-            </button>
-            <p className="page-number">{pageNumber}</p>
-            <button
-              type="button"
-              className="pagination-btn"
-              onClick={this.onClickingHomeNxtBtn}
-            >
-              Next
-            </button>
-          </>
-        </div>
-      </div>
+              <Link
+                to={`/movie/${eachPopularMovie.id}`}
+                className="view-details-btn-container"
+              >
+                <button type="button" className="view-details-btn">
+                  View Details
+                </button>
+              </Link>
+            </div>
+          </li>
+        ))}
+      </ul>
     )
   }
 
@@ -168,7 +146,32 @@ class Home extends Component {
   }
 
   render() {
-    return <>{this.renderSwitch()}</>
+    const {pageNumber} = this.state
+    return (
+      <div className="home-bg-container">
+        <Header />
+        {this.renderSwitch()}
+        <div className="pagination-container">
+          <>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={this.onClickingHomePrevBtn}
+            >
+              Prev
+            </button>
+            <p className="page-number">{pageNumber}</p>
+            <button
+              type="button"
+              className="pagination-btn"
+              onClick={this.onClickingHomeNxtBtn}
+            >
+              Next
+            </button>
+          </>
+        </div>
+      </div>
+    )
   }
 }
 
